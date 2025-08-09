@@ -1,103 +1,176 @@
-contest：主にAtCoderのコンテストで実際に記述したもの
+# Python Learning Repository
 
-reviewd：それらを元に復習して書いたもの
+## 📁 ディレクトリ構成
 
+- **contest**: 主にAtCoderのコンテストで実際に記述したもの
+- **reviewed**: それらを元に復習して書いたもの
 
-以下はPythonの基本構文と頻出テンプレ
+---
 
-# =========================================
-# AtCoder Python チートシート / テンプレ集
-# =========================================
+# 🐍 AtCoder Python チートシート
 
-# ---- 基本の入出力（高速I/O） -------------------------
+## 📋 目次
+
+1. [基本の入出力](#基本の入出力)
+2. [基本構文](#基本構文)
+3. [データ構造](#データ構造)
+4. [標準ライブラリ](#標準ライブラリ)
+5. [アルゴリズム](#アルゴリズム)
+6. [グラフ・探索](#グラフ探索)
+7. [動的計画法 (DP)](#動的計画法-dp)
+8. [数学・その他](#数学その他)
+
+---
+
+## 基本の入出力
+
+### 高速入力
+```python
 import sys
-input = sys.stdin.readline  # 末尾改行付き。strip()は必要に応じて。
+input = sys.stdin.readline  # 末尾改行付き。strip()は必要に応じて
+```
+
+### 入力パターン
+```python
 # 1行1値
-# n = int(input())
+n = int(input())
+
 # 1行複数値
-# a, b = map(int, input().split())
+a, b = map(int, input().split())
+
 # 配列
-# A = list(map(int, input().split()))
+A = list(map(int, input().split()))
+
 # 複数行
-# N = int(input())
-# B = [int(input()) for _ in range(N)]
+N = int(input())
+B = [int(input()) for _ in range(N)]
+```
 
-# 出力
-# print(x)                       # 改行あり
-# print(*arr)                    # 配列を空白区切りで
-# sys.stdout.write(str(x) + "\n")# さらに速く
+### 出力パターン
+```python
+print(x)                        # 改行あり
+print(*arr)                     # 配列を空白区切りで
+sys.stdout.write(str(x) + "\n") # さらに高速
+```
 
-# ---- 基本構文 -----------------------------------------
-# 変数/型
+---
+
+## 基本構文
+
+### 変数・型
+```python
 x = 10
 f = 3.14
 s = "abc"
 b = True
+```
 
-# 条件分岐
+### 条件分岐
+```python
 if x >= 10 and b:
     pass
 elif x > 0 or not b:
     pass
 else:
     pass
+```
 
-# for 文（rangeは半開区間）
+### ループ
+```python
+# for文（rangeは半開区間）
 for i in range(5):          # 0..4
     pass
 for i in range(2, 10, 2):   # 2,4,6,8
     pass
 
-# while 文
+# while文
 cnt = 0
 while cnt < 5:
     cnt += 1
+```
 
-# 内包表記
+### リスト内包表記
+```python
 sq = [i*i for i in range(5)]
 pairs = [(i, j) for i in range(3) for j in range(3) if i != j]
+```
 
-# 列挙・同時ループ
+### 列挙・同時ループ
+```python
 arr = [5, 2, 9]
 for i, v in enumerate(arr):  # (index, value)
     pass
+
 A, B = [1,2,3], [4,5,6]
 for a, b in zip(A, B):
     pass
+```
 
-# ---- リスト/ソート ------------------------------------
+---
+
+## データ構造
+
+### リスト・ソート
+```python
 A = [5, 1, 4, 4]
 A.sort()                     # 破壊的昇順
 A.sort(reverse=True)         # 降順
 A2 = sorted(A, key=lambda x: (x % 2, x))  # 新リスト返す & 複合キー
+```
 
-# ---- 集合/辞書 ----------------------------------------
+### 集合・辞書
+```python
+# 集合
 S = set([1, 2, 2, 3])
-S.add(10); S.discard(2); ok = (3 in S)
-D = {"a": 1}
-D.get("x", 0)                # キーなければ0
+S.add(10)
+S.discard(2)
+ok = (3 in S)
 
-# ---- 便利標準ライブラリ -------------------------------
+# 辞書
+D = {"a": 1}
+D.get("x", 0)  # キーなければ0
+```
+
+---
+
+## 標準ライブラリ
+
+### よく使うインポート
+```python
 from collections import deque, Counter, defaultdict
 from itertools import permutations, combinations, product, accumulate
 import math
 from heapq import heappush, heappop
 import bisect
+```
 
-# Counter/accumulateの例
-cnts = Counter([1,2,2,3])        # 頻度
+### 使用例
+```python
+# Counter: 頻度カウント
+cnts = Counter([1,2,2,3])        # {1:1, 2:2, 3:1}
+
+# accumulate: 累積
 prefix = list(accumulate([1,2,3]))  # [1,3,6]
+```
 
-# ---- 累積和（1D/2D） ---------------------------------
-# 1D: prefix[i] = A[0]+...+A[i-1]
+---
+
+## アルゴリズム
+
+### 累積和
+
+#### 1次元累積和
+```python
 def prefix_sum(A):
     ps = [0]*(len(A)+1)
     for i, v in enumerate(A, 1):
         ps[i] = ps[i-1] + v
     return ps
 # 区間和 [l, r) は ps[r]-ps[l]
+```
 
-# 2D 累積和（1-indexで持つと楽）
+#### 2次元累積和
+```python
 def prefix_sum_2d(G):  # G: HxW
     H, W = len(G), len(G[0])
     ps = [[0]*(W+1) for _ in range(H+1)]
@@ -106,17 +179,22 @@ def prefix_sum_2d(G):  # G: HxW
         for j in range(1, W+1):
             ps[i][j] = ps[i][j-1] + ps[i-1][j] - ps[i-1][j-1] + row[j-1]
     return ps
-# 長方形和 (r1,r2)×(c1,c2) = ps[r2][c2]-ps[r1][c2]-ps[r2][c1]+ps[r1][c1]  (半開区間想定)
+# 長方形和 (r1,r2)×(c1,c2) = ps[r2][c2]-ps[r1][c2]-ps[r2][c1]+ps[r1][c1]
+```
 
-# ---- 二分探索（bisect / 答えで二分） -------------------
-# 1) bisect による位置取得（昇順配列）
+### 二分探索
+
+#### bisect モジュール
+```python
 A = [1, 2, 4, 4, 7]
 pos_left  = bisect.bisect_left(A, 4)   # 最初の4の位置(=2)
 pos_right = bisect.bisect_right(A, 4)  # 4より大きい最初の位置(=4)
-# 2) 条件関数(check)を使った“答えで二分探索”の基本形
+```
+
+#### 答えで二分探索
+```python
 def binary_search_answer(low, high, check):
-    # 条件: check(x) が False→True に切り替わる単調性があるとき
-    # 戻り値: 最小のTrue位置（存在すれば）
+    """条件を満たす最小値を探す"""
     while low < high:
         mid = (low + high) // 2
         if check(mid):
@@ -124,12 +202,22 @@ def binary_search_answer(low, high, check):
         else:
             low = mid + 1
     return low
+```
 
-# 例: 与えた長さでK本以上に切れる最小の長さを求める、など
-# def check(x): return 本数 >= K
+### 座標圧縮
+```python
+def compress(arr):
+    xs = sorted(set(arr))
+    idx = {x:i for i, x in enumerate(xs)}
+    return [idx[x] for x in arr], xs  # 圧縮後, 復元配列
+```
 
-# ---- グリッド探索（BFS/DFS） --------------------------
-# BFS（最短手数）
+---
+
+## グラフ・探索
+
+### BFS（幅優先探索）
+```python
 def bfs_grid(grid, sy, sx, wall="#"):
     H, W = len(grid), len(grid[0])
     INF = 10**18
@@ -137,6 +225,7 @@ def bfs_grid(grid, sy, sx, wall="#"):
     q = deque()
     dist[sy][sx] = 0
     q.append((sy, sx))
+    
     while q:
         y, x = q.popleft()
         for dy, dx in ((1,0),(-1,0),(0,1),(0,-1)):
@@ -145,8 +234,11 @@ def bfs_grid(grid, sy, sx, wall="#"):
                 dist[ny][nx] = dist[y][x] + 1
                 q.append((ny, nx))
     return dist
+```
 
-# DFS（再帰 or スタック）
+### DFS（深さ優先探索）
+```python
+# 再帰版
 sys.setrecursionlimit(1_000_000)
 def dfs_graph_rec(G, v, seen):
     seen[v] = True
@@ -154,6 +246,7 @@ def dfs_graph_rec(G, v, seen):
         if not seen[to]:
             dfs_graph_rec(G, to, seen)
 
+# スタック版
 def dfs_graph_iter(G, s):
     N = len(G)
     seen = [False]*N
@@ -166,15 +259,18 @@ def dfs_graph_iter(G, s):
                 seen[to] = True
                 st.append(to)
     return seen
+```
 
-# ---- ダイクストラ（重み非負の最短路） ------------------
+### ダイクストラ法
+```python
 def dijkstra(G, s):
-    # G[u] = [(cost, v), ...]
+    """G[u] = [(cost, v), ...]"""
     N = len(G)
     INF = 10**18
     dist = [INF]*N
     dist[s] = 0
     pq = [(0, s)]
+    
     while pq:
         d, v = heappop(pq)
         if d != dist[v]:  # 古いエントリ
@@ -185,33 +281,45 @@ def dijkstra(G, s):
                 dist[to] = nd
                 heappush(pq, (nd, to))
     return dist
+```
 
-# ---- Union-Find（DSU） --------------------------------
+### Union-Find
+```python
 class UnionFind:
     def __init__(self, n):
         self.par = [-1]*n  # 親(負ならサイズ)
+    
     def find(self, x):
         while self.par[x] >= 0:
             if self.par[self.par[x]] >= 0:
-                self.par[x] = self.par[self.par[x]]  # 路圧縮（手動）
+                self.par[x] = self.par[self.par[x]]  # 路圧縮
             x = self.par[x]
         return x
+    
     def unite(self, a, b):
         a, b = self.find(a), self.find(b)
         if a == b: return False
-        if self.par[a] > self.par[b]:  # (サイズが負なので > が小)
+        if self.par[a] > self.par[b]:  # サイズが小さい方を親に
             a, b = b, a
         self.par[a] += self.par[b]
         self.par[b] = a
         return True
+    
     def same(self, a, b):
         return self.find(a) == self.find(b)
+    
     def size(self, x):
         return -self.par[self.find(x)]
+```
 
-# ---- DP 基本形 ----------------------------------------
-# 例: 最長増加部分列(LIS)長（O(N log N)）※復元なし
+---
+
+## 動的計画法 (DP)
+
+### 最長増加部分列 (LIS)
+```python
 def lis_length(A):
+    """O(N log N)"""
     dp = []
     for x in A:
         i = bisect.bisect_left(dp, x)
@@ -220,76 +328,61 @@ def lis_length(A):
         else:
             dp[i] = x
     return len(dp)
+```
 
-# 例: 0/1ナップサック（価値最大） O(N*W)
+### 0/1ナップサック
+```python
 def knapsack_01(items, W):
-    # items: [(w, v), ...]
+    """items: [(w, v), ...], O(N*W)"""
     dp = [-10**18]*(W+1)
     dp[0] = 0
     for w, v in items:
         for cap in range(W, w-1, -1):
             dp[cap] = max(dp[cap], dp[cap-w] + v)
     return max(dp)
+```
 
-# ---- 座標圧縮 -----------------------------------------
-def compress(arr):
-    xs = sorted(set(arr))
-    idx = {x:i for i, x in enumerate(xs)}
-    return [idx[x] for x in arr], xs  # 圧縮後, 復元配列
+---
 
-# ---- 文字列処理 ---------------------------------------
-t = "abca"
-# 反転
-rev = t[::-1]
-# 回文判定
-is_pal = (t == t[::-1])
-# 文字頻度
-freq = Counter(t)
+## 数学・その他
 
-# ---- 余り（mod）/ べき乗・逆元 ------------------------
+### MOD演算
+```python
 MOD = 10**9 + 7
-# a^b mod MOD
-# pow(a,b,MOD) は繰り返し二乗法で速い
-# 逆元（MODが素数なら a^(MOD-2)）
+
+# べき乗
+pow(a, b, MOD)  # a^b mod MOD
+
+# 逆元（MODが素数の場合）
 def inv(a, mod=MOD):
     return pow(a, mod-2, mod)
+```
 
-# ---- 小数点/誤差 --------------------------------------
-# 浮動小数の比較には許容誤差を使う
+### 文字列処理
+```python
+t = "abca"
+
+# 反転
+rev = t[::-1]
+
+# 回文判定
+is_pal = (t == t[::-1])
+
+# 文字頻度
+freq = Counter(t)
+```
+
+### 浮動小数点
+```python
 def eq(a, b, eps=1e-9):
+    """誤差を考慮した比較"""
     return abs(a-b) <= eps
+```
 
-# ---- パターン: “答えで二分探索”の雛形 -----------------
-# 例: 条件を満たす最小/最大の整数解を探す
-def lower_bound_ok(lo, hi):
-    # Trueになる最小位置
-    def ok(x):
-        # x が条件を満たすか？
-        return True
-    while lo < hi:
-        mid = (lo + hi) // 2
-        if ok(mid):
-            hi = mid
-        else:
-            lo = mid + 1
-    return lo
-
-def upper_bound_ok(lo, hi):
-    # Falseになる最大位置（True域の直前）を返したい等なら工夫
-    pass
-
-# ---- パターン: 多ケース処理 ----------------------------
-def main_multi():
-    import sys
-    input = sys.stdin.readline
-    T = int(input())
-    for _ in range(T):
-        # 各テストケース処理
-        pass
-
-# ---- 典型: 区間スケジューリング（終了時刻ソート） ----
+### 区間スケジューリング
+```python
 def max_non_overlapping(intervals):
-    # intervals: [(l, r), ...]
+    """終了時刻でソート"""
     intervals.sort(key=lambda x: x[1])
     res, cur = 0, -10**18
     for l, r in intervals:
@@ -297,8 +390,14 @@ def max_non_overlapping(intervals):
             res += 1
             cur = r
     return res
+```
 
-# ---- 典型: グラフ入力テンプレ --------------------------
+---
+
+## グラフ入力テンプレート
+
+### 無向グラフ
+```python
 def read_graph_undirected(N, M, one_indexed=True):
     G = [[] for _ in range(N)]
     for _ in range(M):
@@ -308,7 +407,10 @@ def read_graph_undirected(N, M, one_indexed=True):
         G[a].append(b)
         G[b].append(a)
     return G
+```
 
+### 有向グラフ（重み付き対応）
+```python
 def read_graph_directed(N, M, weighted=False, one_indexed=True):
     if weighted:
         G = [[] for _ in range(N)]
@@ -326,8 +428,13 @@ def read_graph_directed(N, M, weighted=False, one_indexed=True):
                 a -= 1; b -= 1
             G[a].append(b)
         return G
+```
 
-# ---- main テンプレ ------------------------------------
+---
+
+## メインテンプレート
+
+```python
 def main():
     import sys
     input = sys.stdin.readline
@@ -335,5 +442,5 @@ def main():
     pass
 
 if __name__ == "__main__":
-    # main()
-    pass
+    main()
+```
