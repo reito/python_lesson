@@ -1,4 +1,5 @@
-# Python Learning Repository
+# AtCoder Repository
+リポジトリにデカデカとpython_lessonとありますが、主にAtCoderのレベル上げを目的に使っています。
 
 ## 📁 ディレクトリ構成
 
